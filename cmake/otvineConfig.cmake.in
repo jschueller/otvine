@@ -1,0 +1,44 @@
+#                                               -*- cmake -*-
+#
+#  otvineConfig.cmake(.in)
+#
+#  Find otvine includes and libraries
+#
+#  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
+#
+
+# Use the following variables to compile and link against otvine:
+#  OTVINE_FOUND          - True if otvine was found on your system
+#  OTVINE_DEFINITIONS    - Definitions needed to build with otvine
+#  OTVINE_INCLUDE_DIRS   - List of directories where otvine' header file are
+#  OTVINE_LIBRARY        - Library name
+#  OTVINE_LIBRARIES      - List of libraries to link against
+#  OTVINE_LIBRARY_DIRS   - List of directories containing otvine' libraries
+#  OTVINE_ROOT_DIR       - The base directory of otvine
+#  OTVINE_VERSION_STRING - A human-readable string containing the version
+#  OTVINE_VERSION_MAJOR  - The major version of otvine
+#  OTVINE_VERSION_MINOR  - The minor version of otvine
+#  OTVINE_VERSION_PATCH  - The patch version of otvine
+
+@PACKAGE_INIT@
+
+set ( OTVINE_FOUND 1 )
+
+set ( OTVINE_DEFINITIONS  "@OTVINE_DEFINITIONS@" )
+set_and_check (OTVINE_INCLUDE_DIR  "@PACKAGE_OTVINE_INCLUDE_DIR@")
+set ( OTVINE_INCLUDE_DIRS "@PACKAGE_OTVINE_INCLUDE_DIRS@" )
+set_and_check (OTVINE_LIBRARY      "@OTVINE_LIBRARY@")
+set ( OTVINE_LIBRARIES    "@PACKAGE_OTVINE_LIBRARIES@" )
+set ( OTVINE_LIBRARY_DIRS "@PACKAGE_OTVINE_LIBRARY_DIRS@" )
+set_and_check (OTVINE_ROOT_DIR     "@PACKAGE_OTVINE_ROOT_DIR@")
+
+set ( OTVINE_VERSION_STRING "@OTVINE_VERSION_STRING@" )
+set ( OTVINE_VERSION_MAJOR  "@OTVINE_VERSION_MAJOR@" )
+set ( OTVINE_VERSION_MINOR  "@OTVINE_VERSION_MINOR@" )
+set ( OTVINE_VERSION_PATCH  "@OTVINE_VERSION_PATCH@" )
+
+set (OTVINE_SWIG_INCLUDE_DIRS "@PACKAGE_OTVINE_SWIG_INCLUDE_DIRS@")
+set (OTVINE_PYTHON_MODULE_PATH "@PACKAGE_PYTHON_MODULE_PATH@")
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+include (${CMAKE_CURRENT_LIST_DIR}/otvine-Targets.cmake)

@@ -1,0 +1,23 @@
+Source: otvine
+Section: science
+Priority: optional
+Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
+Uploaders: Julien Schueller <schueller@phimeca.com>
+Build-Depends: debhelper-compat (= 12),
+               dh-python,
+               cmake,
+               libopenturns-dev,
+               python3-openturns,
+               python3-dev,
+               swig
+Standards-Version: 4.6.0
+Homepage: http://www.openturns.org/
+Rules-Requires-Root: no
+
+Package: otvine
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3-openturns
+Description: openturns module otvine
+ Template module for OpenTURNS
+ It provides useful features
