@@ -1,0 +1,36 @@
+name: Build
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: ./utils/build_locally.sh linux
+      - name: Upload
+        if: ${{ github.ref == 'refs/heads/master' }}
+        run: |
+          git clone --depth 1 https://${{ secrets.GH_TOKEN }}@github.com/openturns/openturns.github.io.git /tmp/io
+          mkdir -p /tmp/io/otvine/master
+          cp -r html/* /tmp/io/otvine/master
+          cd /tmp/io
+          touch .nojekyll
+          git config user.email "support@gh.com"
+          git config user.name "GitHub Actions"
+          git add -A .
+          git commit -a -m "GitHub Actions build ${GITHUB_REPOSITORY} ${GITHUB_RUN_ID}" || exit 0
+          git push --quiet origin master > /dev/null 2>&1
+
+  mingw:
+    runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: ./utils/build_locally.sh mingw

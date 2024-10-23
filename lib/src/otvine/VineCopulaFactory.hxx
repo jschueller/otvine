@@ -2,7 +2,7 @@
 /**
  *  @brief VineCopulaFactory
  *
- *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,7 @@
 #include <openturns/DistributionFactoryImplementation.hxx>
 
 #include "otvine/otvineprivate.hxx"
+#include "VineCopula.hxx"
 
 namespace OTVINE
 {
@@ -46,7 +47,7 @@ public:
   VineCopulaFactory * clone() const override;
 
   /** example of a func that return a point squared. **/
-  OT::Distribution build(const OT::Sample & sample) const;
+  OT::Distribution build(const OT::Sample & sample) const override;
 
   /** String converter */
   OT::String __repr__() const override;
@@ -57,8 +58,10 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(OT::Advocate & adv) override;
 
+  void setNative(const OT::Bool native);
 private:
 
+  OT::Bool native_ = false;
 }; /* class VineCopulaFactory */
 
 } /* namespace OTVINE */
