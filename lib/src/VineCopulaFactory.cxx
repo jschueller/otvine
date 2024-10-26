@@ -52,21 +52,12 @@ Distribution VineCopulaFactory::build(const Sample & sample) const
   const UnsignedInteger dimension = sample.getDimension();
   const UnsignedInteger size = sample.getSize();
   Eigen::MatrixXd data(size, dimension);
-  
-  
   for (UnsignedInteger i = 0; i < size; ++ i)
     for (UnsignedInteger j = 0; j < dimension; ++ j)
       data(i, j) = sample(i, j);
-  
-  // Eigen::MatrixXd data2 = data;
-  
-  vinecopulib::Vinecop model(dimension);
-  model.select_all(data);
-  std::cout << model.str() << std::endl;
-  // vinecopulib::Vinecop model(dimension);
-  // model.select_families(data);
-  // std::cout << model <<std::endl;
-  return Distribution();
+  Pointer <vinecopulib::Vinecop> p_vinecop = new vinecopulib::Vinecop(dimension);
+  p_vinecop->select_all(data);
+  return VineCopula(p_vinecop);
 }
 
 /* String converter */

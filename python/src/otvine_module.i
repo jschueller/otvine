@@ -18,6 +18,7 @@
 
 // The new classes
 %include otvine/otvineprivate.hxx
+%include VineCopula.i
 %include VineCopulaFactory.i
 
 

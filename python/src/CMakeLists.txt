@@ -77,7 +77,8 @@ endmacro ()
 
 
 
-ot_add_python_module( ${PACKAGE_NAME} ${PACKAGE_NAME}_module.i 
+ot_add_python_module( ${PACKAGE_NAME} ${PACKAGE_NAME}_module.i
+                      VineCopula.i VineCopula_doc.i.in
                       VineCopulaFactory.i VineCopulaFactory_doc.i.in
                     )
 
