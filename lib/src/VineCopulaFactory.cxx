@@ -56,7 +56,7 @@ Distribution VineCopulaFactory::build(const Sample & sample) const
     for (UnsignedInteger j = 0; j < dimension; ++ j)
       data(i, j) = sample(i, j);
   Pointer <vinecopulib::Vinecop> p_vinecop = new vinecopulib::Vinecop(dimension);
-  p_vinecop->select_all(data);
+  p_vinecop->select(data);
   return VineCopula(p_vinecop);
 }
 
