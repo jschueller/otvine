@@ -48,7 +48,6 @@ public:
 
   /** example of a func that return a point squared. **/
   OT::Distribution build(const OT::Sample & sample) const;
-  VineCopula buildAsNative(const OT::Sample & sample) const;
 
   /** String converter */
   OT::String __repr__() const override;

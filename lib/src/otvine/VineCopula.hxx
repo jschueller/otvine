@@ -56,9 +56,6 @@ protected:
   OT::Bool equals(const DistributionImplementation & other) const override;
 public:
 
-  /** Convert to native OT distribution if possible */
-  OT::Distribution asNative() const;
-
   /** String converter */
   OT::String __repr__() const override;
 

@@ -24,5 +24,3 @@ print(sample2.computeMean())
 
 factory2 = ot.ClaytonCopulaFactory()
 print(factory2.build(sample))
-
-print(factory.buildAsNative(sample).asNative())

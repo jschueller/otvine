@@ -20,6 +20,9 @@
  */
 #include "otvine/VineCopulaFactory.hxx"
 #include <openturns/PersistentObjectFactory.hxx>
+#include <openturns/ClaytonCopula.hxx>
+#include <openturns/GumbelCopula.hxx>
+#include <openturns/FrankCopula.hxx>
 
 #include <vinecopulib.hpp>
 
@@ -47,7 +50,7 @@ VineCopulaFactory * VineCopulaFactory::clone() const
 }
 
 /* example of a func that return a point squared. */
-VineCopula VineCopulaFactory::buildAsNative(const Sample & sample) const
+Distribution VineCopulaFactory::build(const Sample & sample) const
 {
   const UnsignedInteger dimension = sample.getDimension();
   const UnsignedInteger size = sample.getSize();
@@ -57,7 +60,7 @@ VineCopula VineCopulaFactory::buildAsNative(const Sample & sample) const
       data(i, j) = sample(i, j);
   Pointer <vinecopulib::Vinecop> p_vinecop = new vinecopulib::Vinecop(dimension);
   std::vector<vinecopulib::BicopFamily> family_set;
-#if 1
+#if 0
   family_set = {
     vinecopulib::BicopFamily::clayton,
     vinecopulib::BicopFamily::gumbel,
@@ -65,13 +68,28 @@ VineCopula VineCopulaFactory::buildAsNative(const Sample & sample) const
 #endif
   vinecopulib::FitControlsVinecop controls(family_set);
   p_vinecop->select(data, controls);
+
+#if 0
+  std::vector<std::vector<vinecopulib::Bicop> > pairs = p_vinecop->get_all_pair_copulas();
+  if (p_vinecop->get_dim() == 2 && pairs.size() == 1 && pairs[0].size() == 1)
+  {
+    vinecopulib::Bicop bicop = pairs[0][0];
+    int rotation = bicop.get_rotation();
+    if (rotation == 0)
+    {
+      const Scalar theta = bicop.get_parameters()(0, 0);
+      if (bicop.get_family_name() == "Clayton")
+        return ClaytonCopula(theta);
+      else if (bicop.get_family_name() == "Frank")
+        return FrankCopula(theta);
+      else if (bicop.get_family_name() == "Gumbel")
+        return GumbelCopula(theta);
+    }
+  }
+#endif
   return VineCopula(p_vinecop);
 }
 
-Distribution VineCopulaFactory::build(const Sample & sample) const
-{
-  return buildAsNative(sample);
-}
 
 /* String converter */
 String VineCopulaFactory::__repr__() const
