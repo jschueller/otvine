@@ -32,8 +32,6 @@ message (STATUS "Found OpenTURNS: ${OPENTURNS_ROOT_DIR} (found version \"${OPENT
 
 find_package (vinecopulib CONFIG REQUIRED)
 
-find_package(Eigen3 CONFIG REQUIRED)
-
 if (NOT BUILD_SHARED_LIBS)
   list ( APPEND OTVINE_DEFINITIONS "-DOTVINE_STATIC" )
 endif ()

@@ -2,6 +2,8 @@
 
 set -xe
 
+aurman -S mingw-w64-vinecopulib --noconfirm --noedit --pgp_fetch
+
 cd /tmp
 mkdir build && cd build
 

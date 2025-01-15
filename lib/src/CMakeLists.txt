@@ -26,7 +26,7 @@ endif ()
 set_target_properties (otvine PROPERTIES VERSION ${LIB_VERSION})
 set_target_properties (otvine PROPERTIES SOVERSION ${LIB_SOVERSION})
 target_link_libraries (otvine PUBLIC ${OPENTURNS_LIBRARY})
-target_link_libraries (otvine PRIVATE vinecopulib Eigen3::Eigen)
+target_link_libraries (otvine PUBLIC vinecopulib)
 
 # Add targets to the build-tree export set
 export (TARGETS otvine FILE ${PROJECT_BINARY_DIR}/otvine-Targets.cmake)
