@@ -1,11 +1,11 @@
-// SWIG file VineCopulaFactory.i
+// SWIG file VineCopula.i
 
 %{
-#include "otvine/VineCopulaFactory.hxx"
+#include "otvine/VineCopula.hxx"
 %}
 
-%include VineCopulaFactory_doc.i
+%include VineCopula_doc.i
 
-%copyctor OTVINE::VineCopulaFactory;
+%copyctor OTVINE::VineCopula;
 
-%include otvine/VineCopulaFactory.hxx
+%include otvine/VineCopula.hxx

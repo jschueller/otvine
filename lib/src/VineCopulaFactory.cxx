@@ -47,7 +47,7 @@ VineCopulaFactory * VineCopulaFactory::clone() const
 }
 
 /* example of a func that return a point squared. */
-Distribution VineCopulaFactory::build(const Sample & sample) const
+VineCopula VineCopulaFactory::buildAsNative(const Sample & sample) const
 {
   const UnsignedInteger dimension = sample.getDimension();
   const UnsignedInteger size = sample.getSize();
@@ -56,8 +56,21 @@ Distribution VineCopulaFactory::build(const Sample & sample) const
     for (UnsignedInteger j = 0; j < dimension; ++ j)
       data(i, j) = sample(i, j);
   Pointer <vinecopulib::Vinecop> p_vinecop = new vinecopulib::Vinecop(dimension);
-  p_vinecop->select(data);
+  std::vector<vinecopulib::BicopFamily> family_set;
+#if 1
+  family_set = {
+    vinecopulib::BicopFamily::clayton,
+    vinecopulib::BicopFamily::gumbel,
+    vinecopulib::BicopFamily::frank};
+#endif
+  vinecopulib::FitControlsVinecop controls(family_set);
+  p_vinecop->select(data, controls);
   return VineCopula(p_vinecop);
+}
+
+Distribution VineCopulaFactory::build(const Sample & sample) const
+{
+  return buildAsNative(sample);
 }
 
 /* String converter */

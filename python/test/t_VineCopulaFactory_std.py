@@ -16,5 +16,13 @@ for u in sample[:5]:
 realization = distribution.getRealization()
 print(realization)
 
-sample = distribution.getSample(1000)
-print(sample.computeMean())
+bic = ot.FittingTest.BIC(sample, distribution)
+print("bic=", bic)
+
+sample2 = distribution.getSample(1000)
+print(sample2.computeMean())
+
+factory2 = ot.ClaytonCopulaFactory()
+print(factory2.build(sample))
+
+print(factory.buildAsNative(sample).asNative())

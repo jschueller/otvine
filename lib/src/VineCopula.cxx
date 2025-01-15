@@ -20,6 +20,9 @@
  */
 #include "otvine/VineCopula.hxx"
 #include <openturns/PersistentObjectFactory.hxx>
+#include <openturns/ClaytonCopula.hxx>
+#include <openturns/GumbelCopula.hxx>
+#include <openturns/FrankCopula.hxx>
 
 #include <vinecopulib.hpp>
 
@@ -135,6 +138,28 @@ String VineCopula::__repr__() const
   OSS oss;
   oss << "class=" << VineCopula::GetClassName() << " " << p_vinecop_->str();
   return oss;
+}
+
+Distribution VineCopula::asNative() const
+{
+  if (p_vinecop_->get_dim() != 2)
+    throw NotYetImplementedException(HERE) << "dim is not 2";
+  std::vector<std::vector<vinecopulib::Bicop> > pairs = p_vinecop_->get_all_pair_copulas();
+  if (pairs.size() != 1 && pairs[0].size() != 1)
+    throw NotYetImplementedException(HERE) << "tree contains more than one node";
+  vinecopulib::Bicop bicop = pairs[0][0];
+  int rotation = bicop.get_rotation();
+  if (rotation != 0)
+    throw NotYetImplementedException(HERE) << "rotation is not 0";
+  const Scalar theta = bicop.get_parameters()(0, 0);
+  if (bicop.get_family_name() == "Clayton")
+    return ClaytonCopula(theta);
+  else if (bicop.get_family_name() == "Frank")
+    return FrankCopula(theta);
+  else if (bicop.get_family_name() == "Gumbel")
+    return GumbelCopula(theta);
+  else
+    throw NotYetImplementedException(HERE) << "unknown family: " << bicop.get_family_name();
 }
 
 /* Method save() stores the object through the StorageManager */
