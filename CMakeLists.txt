@@ -30,7 +30,7 @@ endif()
 find_package (OpenTURNS CONFIG REQUIRED)
 message (STATUS "Found OpenTURNS: ${OPENTURNS_ROOT_DIR} (found version \"${OPENTURNS_VERSION_STRING}\")")
 
-find_package (vinecopulib CONFIG REQUIRED)
+find_package (vinecopulib 0.7.1 CONFIG REQUIRED)
 
 if (NOT BUILD_SHARED_LIBS)
   list ( APPEND OTVINE_DEFINITIONS "-DOTVINE_STATIC" )

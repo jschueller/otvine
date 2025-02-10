@@ -67,6 +67,7 @@ Distribution VineCopulaFactory::build(const Sample & sample) const
     vinecopulib::BicopFamily::frank};
 #endif
   vinecopulib::FitControlsVinecop controls(family_set);
+  controls.set_allow_rotations(false);
   p_vinecop->select(data, controls);
 
 #if 0
