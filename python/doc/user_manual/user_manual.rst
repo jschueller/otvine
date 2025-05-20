@@ -8,3 +8,5 @@ API Reference
     :template: class.rst_t
   
     VineCopulaFactory
+    VineCopula
+    RotatedCopula

@@ -47,6 +47,7 @@ endmacro ()
 
 
 ot_add_python_module( ${PACKAGE_NAME} ${PACKAGE_NAME}_module.i
+                      RotatedCopula.i RotatedCopula_doc.i
                       VineCopula.i VineCopula_doc.i
                       VineCopulaFactory.i VineCopulaFactory_doc.i
                     )

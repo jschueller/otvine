@@ -37,6 +37,7 @@ macro (ot_pyinstallcheck_test TESTNAME)
 endmacro ()
 
 
+ot_pyinstallcheck_test (RotatedCopula_std IGNOREOUT)
 ot_pyinstallcheck_test (VineCopulaFactory_std IGNOREOUT)
 ot_pyinstallcheck_test (docstring IGNOREOUT)
 

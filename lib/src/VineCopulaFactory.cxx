@@ -23,6 +23,10 @@
 #include <openturns/ClaytonCopula.hxx>
 #include <openturns/GumbelCopula.hxx>
 #include <openturns/FrankCopula.hxx>
+#include <openturns/JoeCopula.hxx>
+#include <openturns/NormalCopula.hxx>
+
+#include "otvine/RotatedCopula.hxx"
 
 #include <vinecopulib.hpp>
 
@@ -60,34 +64,51 @@ Distribution VineCopulaFactory::build(const Sample & sample) const
       data(i, j) = sample(i, j);
   Pointer <vinecopulib::Vinecop> p_vinecop = new vinecopulib::Vinecop(dimension);
   std::vector<vinecopulib::BicopFamily> family_set;
-#if 0
-  family_set = {
-    vinecopulib::BicopFamily::clayton,
-    vinecopulib::BicopFamily::gumbel,
-    vinecopulib::BicopFamily::frank};
-#endif
+  if (native_)
+  {
+    family_set = {
+      vinecopulib::BicopFamily::gaussian,
+      vinecopulib::BicopFamily::clayton,
+      vinecopulib::BicopFamily::gumbel,
+      vinecopulib::BicopFamily::frank,
+      // vinecopulib::BicopFamily::student,
+    };
+  }
   vinecopulib::FitControlsVinecop controls(family_set);
-  controls.set_allow_rotations(false);
   p_vinecop->select(data, controls);
 
-#if 0
-  std::vector<std::vector<vinecopulib::Bicop> > pairs = p_vinecop->get_all_pair_copulas();
-  if (p_vinecop->get_dim() == 2 && pairs.size() == 1 && pairs[0].size() == 1)
+  if (native_)
   {
-    vinecopulib::Bicop bicop = pairs[0][0];
-    int rotation = bicop.get_rotation();
-    if (rotation == 0)
+    std::vector<std::vector<vinecopulib::Bicop> > pairs = p_vinecop->get_all_pair_copulas();
+    if (p_vinecop->get_dim() == 2 && pairs.size() == 1 && pairs[0].size() == 1)
     {
+      vinecopulib::Bicop bicop = pairs[0][0];
+      Distribution copula;
       const Scalar theta = bicop.get_parameters()(0, 0);
       if (bicop.get_family_name() == "Clayton")
-        return ClaytonCopula(theta);
+        copula = ClaytonCopula(theta);
+      else if (bicop.get_family_name() == "Gaussian")
+      {
+        CorrelationMatrix R(2);
+        R(1, 0) = theta;
+        copula = NormalCopula(R);
+      }
       else if (bicop.get_family_name() == "Frank")
-        return FrankCopula(theta);
+        copula = FrankCopula(theta);
       else if (bicop.get_family_name() == "Gumbel")
-        return GumbelCopula(theta);
+        copula = GumbelCopula(theta);
+      // else if (bicop.get_family_name() == "Joe")
+      //   copula = JoeCopula(theta);
+      if (copula.getDimension() == 2)
+      {
+        int rotation = bicop.get_rotation();
+        if (rotation == 0)
+          return copula;
+        else
+          return RotatedCopula(copula, rotation);
+      }
     }
   }
-#endif
   return VineCopula(p_vinecop);
 }
 
@@ -104,13 +125,19 @@ String VineCopulaFactory::__repr__() const
 void VineCopulaFactory::save(Advocate & adv) const
 {
   DistributionFactoryImplementation::save(adv);
+  adv.saveAttribute("native_", native_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void VineCopulaFactory::load(Advocate & adv)
 {
   DistributionFactoryImplementation::load(adv);
+  adv.loadAttribute("native_", native_);
 }
 
+void VineCopulaFactory::setNative(const Bool native)
+{
+  native_ = native;
+}
 
 } /* namespace OTVINE */

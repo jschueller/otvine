@@ -58,8 +58,10 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(OT::Advocate & adv) override;
 
+  void setNative(const OT::Bool native);
 private:
 
+  OT::Bool native_ = false;
 }; /* class VineCopulaFactory */
 
 } /* namespace OTVINE */
