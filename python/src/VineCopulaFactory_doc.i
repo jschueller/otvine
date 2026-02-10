@@ -14,3 +14,12 @@ Notes
 https://www.math.cit.tum.de/math/forschung/gruppen/statistics/vine-copula-models/
 "
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OTVINE::VineCopulaFactory::setNative
+"Native distributions flag accessor.
+
+Parameters
+----------
+native : bool
+    Whether to use only known parametric copulas."

@@ -21,13 +21,21 @@ print(realization)
 # check get the same distributions after inference
 factory.setNative(True)
 
+# normal
 R = ot.CorrelationMatrix(2)
 R[1, 0] = 0.25
 copula = ot.NormalCopula(R)
 sample = copula.getSample(N)
 distribution = factory.build(sample)
 print(distribution)
-assert distribution.getName() == "NormalCopula"
+assert "NormalCopula" in str(distribution)
+
+# student
+copula = ot.StudentCopula(3.5, R)
+sample = copula.getSample(N)
+distribution = factory.build(sample)
+print(distribution)
+assert "StudentCopula" in str(distribution)
 
 copula = ot.GumbelCopula()
 for rotation in [0, 90, 180, 270]:

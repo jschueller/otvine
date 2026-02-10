@@ -25,6 +25,7 @@
 #include <openturns/FrankCopula.hxx>
 #include <openturns/JoeCopula.hxx>
 #include <openturns/NormalCopula.hxx>
+#include <openturns/StudentCopula.hxx>
 
 #include "otvine/RotatedCopula.hxx"
 
@@ -71,7 +72,7 @@ Distribution VineCopulaFactory::build(const Sample & sample) const
       vinecopulib::BicopFamily::clayton,
       vinecopulib::BicopFamily::gumbel,
       vinecopulib::BicopFamily::frank,
-      // vinecopulib::BicopFamily::student,
+      vinecopulib::BicopFamily::student,
     };
   }
   vinecopulib::FitControlsVinecop controls(family_set);
@@ -85,6 +86,8 @@ Distribution VineCopulaFactory::build(const Sample & sample) const
       vinecopulib::Bicop bicop = pairs[0][0];
       Distribution copula;
       const Scalar theta = bicop.get_parameters()(0, 0);
+      LOGDEBUG(OSS() << "family="<< bicop.get_family_name() << " theta=" << theta << " rotation=" << bicop.get_rotation());
+
       if (bicop.get_family_name() == "Clayton")
         copula = ClaytonCopula(theta);
       else if (bicop.get_family_name() == "Gaussian")
@@ -92,6 +95,14 @@ Distribution VineCopulaFactory::build(const Sample & sample) const
         CorrelationMatrix R(2);
         R(1, 0) = theta;
         copula = NormalCopula(R);
+      }
+      else if (bicop.get_family_name() == "Student")
+      {
+        CorrelationMatrix R(2);
+        R(1, 0) = theta;
+        const Scalar nu = bicop.get_parameters()(1, 0);
+        copula = StudentCopula(nu, R);
+        copula.setName("StudentCopula"); // Fixed in OT>=1.27
       }
       else if (bicop.get_family_name() == "Frank")
         copula = FrankCopula(theta);
