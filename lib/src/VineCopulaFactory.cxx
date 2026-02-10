@@ -76,6 +76,7 @@ Distribution VineCopulaFactory::build(const Sample & sample) const
     };
   }
   vinecopulib::FitControlsVinecop controls(family_set);
+  controls.set_allow_rotations(allowRotations_);
   p_vinecop->select(data, controls);
 
   if (native_)
@@ -149,6 +150,11 @@ void VineCopulaFactory::load(Advocate & adv)
 void VineCopulaFactory::setNative(const Bool native)
 {
   native_ = native;
+}
+
+void VineCopulaFactory::setAllowRotations(const OT::Bool allowRotations)
+{
+  allowRotations_ = allowRotations;
 }
 
 } /* namespace OTVINE */

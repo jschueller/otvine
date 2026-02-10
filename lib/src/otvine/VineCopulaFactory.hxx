@@ -59,9 +59,11 @@ public:
   void load(OT::Advocate & adv) override;
 
   void setNative(const OT::Bool native);
+  void setAllowRotations(const OT::Bool allowRotations);
 private:
 
   OT::Bool native_ = false;
+  OT::Bool allowRotations_ = true;
 }; /* class VineCopulaFactory */
 
 } /* namespace OTVINE */

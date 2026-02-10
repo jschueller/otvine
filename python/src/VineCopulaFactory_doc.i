@@ -23,3 +23,13 @@ Parameters
 ----------
 native : bool
     Whether to use only known parametric copulas."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OTVINE::VineCopulaFactory::setAllowRotations
+"Allowed rotations flag accessor.
+
+Parameters
+----------
+allowRotations : bool
+    Whether to allow rotations."
